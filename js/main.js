@@ -1,17 +1,19 @@
 class Order{
     constructor(number){
-        this.numberOfOrder = number;
-        this.date = function(){
-            let day = new Date().getDate();
-            let month = new Date().getMonth() + 1;
-            let year = new Date().getFullYear();
-            let time = new Date().getHours();
-            let minutes = new Date().getMinutes();
-            let d = day + "/" + month + "/" + year;
-            let t = time + ":" + minutes;
-            return [d, t];
-        }  
+        this.numberOfOrder = number;  
+                
     }
+    get date(){
+        let day = new Date().getDate();
+        let month = new Date().getMonth() + 1;
+        let year = new Date().getFullYear();
+        let time = new Date().getHours();
+        let minutes = new Date().getMinutes();
+        let d = day + "/" + month + "/" + year;
+        let t = time + ":" + minutes;
+        return [d, t];
+    }
+    
 };
 class Billing extends Order{
     constructor(cached){
@@ -50,8 +52,9 @@ let order = new Order(1);
 console.log(drink);
 console.log(pizza);
 console.log(addings);
-console.log(order.date());
+console.log(order.date);
 console.log(order.numberOfOrder);
+console.log(order);
 /*PRINT DRINK
 document.getElementById("root").innerHTML = function(){ 
     var txt = "";
