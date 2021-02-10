@@ -6,6 +6,14 @@ let orders = [];
 let currentNumber = 0;
 //name of current item
 let currentName = "";
+//create array of items;
+let arrayOfItems = [];
+const  namesOfPizzas =['Capriciosa', 'Vezuvio','Siciliana', 'Calzona'];
+const  namesOfPastas = ['Carbonara', 'Milaneze', 'Italiana', 'Bolonjeze', 'Quatr0 Formagio'];
+const typesOfBeverages = ['Voda', 'negaziranni sok', 'gazirani sok'];
+const namesOfBeverages = ['Rosa', 'Jabuka', 'Coca Cola'];
+const namesOfAdds = ['Kecap', 'Sir', 'Origano', 'Pavlaka', 'Masline'];
+const volumeOfBeverages = [0.5, 0.25, 0.33];
 const tableList = document.querySelector(".table-list");
 const ordersList = document.getElementById("orders-list");
 const nameInput = document.getElementById("name-input");
@@ -78,7 +86,40 @@ class Pasta{
         return price;
     }
 }
+class Adds{
+    constructor(name){
+        this.name = name;
+        this.price = this.getPrice();
+    }
+    getPrice(){
+        const price = Math.floor(Math.random()*81) + 20;
+        return price
+    }
+}
 class Restaurant{
+    static start(numberOfTables,numberOfPizzas, numberOfPastas, numberOfBeverages, numberOfAdds){
+        Restaurant.getTables(numberOfTables);
+        Restaurant.getItems(numberOfPizzas, numberOfPastas, numberOfBeverages, numberOfAdds)
+    }
+    static getItems(numberOfPizzas, numberOfPastas, numberOfBeverages, numberOfAdds){
+        for(let i = 0; i < numberOfPizzas; i++){
+            let pizza = new Pizza(namesOfPizzas[i]);
+            arrayOfItems.push(pizza);
+        }
+        for (let i = 0; i < numberOfPastas; i++){
+            let pasta = new Pasta(namesOfPastas[i]);
+            arrayOfItems.push(pasta)
+        }
+        for(let i = 0; i < numberOfBeverages; i++){
+            let drink = new Beverage(typesOfBeverages[i], namesOfBeverages[i], volumeOfBeverages[i]);
+            arrayOfItems.push(drink);
+        }
+        for(let i = 0; i < numberOfAdds; i++){
+            let adds = new Adds(namesOfAdds[i]);
+            arrayOfItems.push(adds)
+        }
+       // return arrayOfItems
+    }
     //create Array of tables
     static getTables(numb){
         for(let i = 1; i <= numb; i++){
@@ -93,6 +134,7 @@ class Restaurant{
             tableList.appendChild(div);
         })
     }
+    
     static createOrder(tableNumber){
         const order = new Order(tableNumber);
         orders.push(order);      
@@ -117,8 +159,9 @@ class UI{
         ordersList.appendChild(div);
     }
 }
-document.addEventListener('DOMContentLoaded', Restaurant.getTables(8));
-//console.log(new Pizza("Capriciosa"))
+document.addEventListener('DOMContentLoaded', 
+Restaurant.start(numberOfTables = 4,numberOfPizzas = 4, numberOfPastas = 5, numberOfBeverages = 3, numberOfAdds = 5));
+console.log(arrayOfItems)
 
 /*class Billing extends Order{
     constructor(cached){
