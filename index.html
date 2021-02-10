@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link type="text/css" rel="stylesheet" href="./css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
     <div id="root">
-        <button class= "create-order-btn">Create order</button>
-        <button class="start-order-btn">Start order</button>
+        <h1>Meal</h1>
+        <input class="name-input" id="name-input" type="text" placeholder="Name" 
+        value="" onfocus = "Order.clearInput()" onchange = "Order.getInput()"/>
+        <button class= "create-pizza-btn" onclick="console.log(new Pizza(currentName))">Create Pizza</button>
+        <button class= "create-pasta-btn" onclick="console.log(new Pasta(currentName))">Create Pasta</button>
+        <button class="create-beverige-btn">Create beverage</button>
+        <div class="table-list">
+
+        </div>
         <div id="orders-list"> 
 
         </div>
-        <div class="table-list"></div>
+       
         
     </div>
     <script type="text/javascript" src="./js/main.js"></script>

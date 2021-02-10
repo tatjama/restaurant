@@ -4,6 +4,12 @@
     color: darkgreen;
     padding: 10px;
     width: 100px;
-    margin: 10px auto;
+    margin: 10px;
     text-align: center;
+    display: inline-block;
+}
+.name-input{
+    margin: 10px auto;
+    padding: 10px;
+    color: red;
 }
