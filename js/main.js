@@ -16,14 +16,12 @@ const namesOfAdds = ['Kecap', 'Sir', 'Origano', 'Pavlaka', 'Masline'];
 const volumeOfBeverages = [0.5, 0.25, 0.33];
 const tableList = document.querySelector(".table-list");
 const ordersList = document.getElementById("orders-list");
-const nameInput = document.getElementById("name-input");
-//const createMealBtn = document.querySelector(".create-meal-btn");
-//const createBeverageBtn = document.querySelector(".create-beverage-btn");
 class Order{
-    constructor(tableNumber, numberOfItems){
+    constructor(tableNumber, listOfOrder){
         this.date = this.getDate();
         this.orderNumber = Order.getNumber();
         this.tableNumber = tableNumber;
+        this.items = listOfOrder;
     }
     getDate(){
         let day = new Date().getDate();
@@ -39,12 +37,22 @@ class Order{
         currentNumber = ++currentNumber;
         return currentNumber;
     }
-    static getInput(){
+    static getInput(tableId){
+        let nameInput = document.getElementById(`pizza${tableId}`);
        currentName =  nameInput.value;
     }
-    static clearInput(){
+    static clearInput(tableId){
+        console.log(tableId);
+        let nameInput = document.getElementById(`pizza${tableId}`);
         currentName = "";
         nameInput.value = "";
+    }
+}
+class ListOfOrder{
+    constructor(){
+        this.item = item;
+        this.quantity = quantity;
+        
     }
 }
 class Table{
@@ -130,19 +138,35 @@ class Restaurant{
             div.setAttribute("class", "table");
             div.setAttribute("id", table.tableName);
             div.innerHTML = "Table No" + table.tableName;
-            div.addEventListener("click",(e) => Restaurant.createOrder(e.target.id));
+            div.addEventListener("click",(e) => UI.orderTable(e.target.id));
+            //div.addEventListener("click",(e) => Restaurant.createOrder(e.target.id));
             tableList.appendChild(div);
         })
     }
     
     static createOrder(tableNumber){
-        const order = new Order(tableNumber);
-        orders.push(order);      
+        let listOfOrder = [];
+        const pizza = new Pizza(currentName);
+        listOfOrder.push(pizza)
+        const order = new Order(tableNumber, listOfOrder);
+        console.log(order);
+        console.log(pizza)
+       orders.push(order);      
         UI.displayOrders(orders);  
     }   
 
 }
 class UI{
+    static orderTable(tableId){
+        let table = document.getElementById(tableId);
+        let div = document.createElement("div");
+        div.innerHTML =`
+        <input class="name-input" id="pizza${tableId}" type="text" placeholder="Name" 
+        value="" onfocus = "Order.clearInput(${tableId})"  onchange = "Order.getInput(${tableId})"/>
+        <button id = "btn"+${tableId} onclick="Restaurant.createOrder(${tableId})">Create order</button>
+        `
+        table.appendChild(div);
+    }
     static displayOrders(){
         let div = document.createElement("div");
         div.setAttribute("class", "order");
