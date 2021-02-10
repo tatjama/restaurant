@@ -17,11 +17,15 @@ const volumeOfBeverages = [0.5, 0.25, 0.33];
 const tableList = document.querySelector(".table-list");
 const ordersList = document.getElementById("orders-list");
 class Order{
-    constructor(tableNumber, listOfOrder){
+    constructor(tableNumber){
         this.date = this.getDate();
         this.orderNumber = Order.getNumber();
         this.tableNumber = tableNumber;
-        this.items = listOfOrder;
+        this.listOfPizzas = [];
+        this.listOfPastas = [];
+        this.listOfDrinks = [];
+        this.addonsForPizza = [];
+        this.addonsForPasta = [];
     }
     getDate(){
         let day = new Date().getDate();
@@ -37,22 +41,31 @@ class Order{
         currentNumber = ++currentNumber;
         return currentNumber;
     }
-    static getInput(tableId){
-        let nameInput = document.getElementById(`pizza${tableId}`);
-       currentName =  nameInput.value;
+    addPizza(pizza){
+        this.listOfPizzas.push(pizza)
     }
-    static clearInput(tableId){
-        console.log(tableId);
-        let nameInput = document.getElementById(`pizza${tableId}`);
-        currentName = "";
-        nameInput.value = "";
+    addPasta(pasta){
+        this.listOfPastas.push(pasta)
     }
+    addDrinks(drink){
+        this.listOfDrinks.push(drink)
+    }
+    addAddonPizza(addonForPizza){
+        this.addonsForPizza.push(addonForPizza)
+    }
+    addAddonPasta(addonForPasta){
+        this.addonsForPasta.push(addonForPasta)
+    }
+    removePizza(){
+
+    }
+    
 }
 class ListOfOrder{
     constructor(){
         this.item = item;
         this.quantity = quantity;
-        
+
     }
 }
 class Table{
@@ -74,7 +87,6 @@ class Beverage{
 }
 class Pizza{
     constructor(name){
-        this.type = "Pizza";
         this.name = name;
         this.price = this.getPrice();
     }
@@ -82,10 +94,19 @@ class Pizza{
         const price = Math.floor(Math.random()*301)+300;
         return price
     }
+    /*static getInput(tableId){
+        let nameInput = document.getElementById(`pizza${tableId}`);
+       currentName =  nameInput.value;
+    }
+    static clearInput(tableId){
+        console.log(tableId);
+        let nameInput = document.getElementById(`pizza${tableId}`);
+        currentName = "";
+        nameInput.value = "";
+    }*/
 }
 class Pasta{
     constructor(name){
-        this.type = "Pasta";
         this.name = name;
         this.price = this.getPrice();
     }
@@ -93,8 +114,18 @@ class Pasta{
         const price = Math.floor(Math.random()*301) + 300;
         return price;
     }
+    /*static getInput(tableId){
+        let nameInput = document.getElementById(`pasta${tableId}`);
+       currentName =  nameInput.value;
+    }
+    static clearInput(tableId){
+        console.log(tableId);
+        let nameInput = document.getElementById(`pasta${tableId}`);
+        currentName = "";
+        nameInput.value = "";
+    }*/
 }
-class Adds{
+class Addon{
     constructor(name){
         this.name = name;
         this.price = this.getPrice();
@@ -123,7 +154,7 @@ class Restaurant{
             arrayOfItems.push(drink);
         }
         for(let i = 0; i < numberOfAdds; i++){
-            let adds = new Adds(namesOfAdds[i]);
+            let adds = new Addon(namesOfAdds[i]);
             arrayOfItems.push(adds)
         }
        // return arrayOfItems
@@ -146,7 +177,7 @@ class Restaurant{
     
     static createOrder(tableNumber){
         let listOfOrder = [];
-        const pizza = new Pizza(currentName);
+        const pizza = new Pizza();
         listOfOrder.push(pizza)
         const order = new Order(tableNumber, listOfOrder);
         console.log(order);
@@ -161,8 +192,11 @@ class UI{
         let table = document.getElementById(tableId);
         let div = document.createElement("div");
         div.innerHTML =`
-        <input class="name-input" id="pizza${tableId}" type="text" placeholder="Name" 
-        value="" onfocus = "Order.clearInput(${tableId})"  onchange = "Order.getInput(${tableId})"/>
+        <input class="name-input" id="pizza${tableId}" type="text" placeholder="Pizza name" 
+        value="" onfocus = "Pizza.clearInput(${tableId})"  onchange = "Pizza.getInput(${tableId})"/>
+        <input class="name-input" id="pasta${tableId}" type="text" placeholder="Pasta name" 
+        value="" onfocus = "Pasta.clearInput(${tableId})"  onchange = "Pasta.getInput(${tableId})"/>
+        
         <button id = "btn"+${tableId} onclick="Restaurant.createOrder(${tableId})">Create order</button>
         `
         table.appendChild(div);
@@ -186,6 +220,22 @@ class UI{
 document.addEventListener('DOMContentLoaded', 
 Restaurant.start(numberOfTables = 4,numberOfPizzas = 4, numberOfPastas = 5, numberOfBeverages = 3, numberOfAdds = 5));
 console.log(arrayOfItems)
+let porudzbina1 = new Order(1);
+let capriciosa = new Pizza("Capriciosa");
+porudzbina1.addPizza(capriciosa);
+let ketchup = new Addon("ketchup");
+porudzbina1.addAddonPizza(ketchup);
+let origano = new Addon("origano");
+porudzbina1.addAddonPizza(origano);
+let italiana = new Pasta("Italiana");
+porudzbina1.addPasta(italiana);
+let sir = new Addon("sir");
+porudzbina1.addAddonPasta(sir);
+let cocaCola = new Beverage("gazirano", "Coca Cola", 0.5);
+porudzbina1.addDrinks(cocaCola);
+porudzbina1.addDrinks(cocaCola);
+console.log(porudzbina1)
+
 
 /*class Billing extends Order{
     constructor(cached){
