@@ -36,6 +36,56 @@ class Order{
         this.listOfDrinks.push(drink)
     }
 }
+class Bill {
+    constructor(order){
+        this.tableNumber = order.tableNumber;
+        this.billNumber = order.orderNumber;
+        this.listOfPizzas = order.listOfPizzas;
+        this.sumOfPizzas = this.calculateSumOfPizzas();
+        this.listOfPastas = order.listOfPastas;
+        this.sumOfPastas = this.calculateSumOfPastas();
+        this.listOfDrinks = order.listOfDrinks;
+        this.sumOfDrinks = this.calculateSumOfDrinks();
+        this.finalSum = this.calculateFinalSum();
+    }
+    calculateSumOfPizzas(){
+        let sum = 0;
+        let n = this.listOfPizzas.length;
+        for(let i = 0; i < n; i++){
+            let sumOfAddons = 0; 
+            let m = this.listOfPizzas[i].addonArr.length;
+            for(let j = 0; j < m; j++){
+                sumOfAddons += this.listOfPizzas[i].addonArr[j].price
+            }
+            sum += this.listOfPizzas[i].price + sumOfAddons
+        }
+        return sum;
+    }
+    calculateSumOfPastas(){
+        let sum = 0;
+        let n = this.listOfPastas.length;
+        for(let i = 0; i < n; i++){
+            let sumOfAddons = 0;
+            let m = this.listOfPastas[i].addonArr.length;
+            for(let j = 0; j < m; j++){
+                sumOfAddons += this.listOfPastas[i].addonArr[j].price
+            }            
+            sum += this.listOfPastas[i].price + sumOfAddons;
+        }
+        return sum;
+    }
+    calculateSumOfDrinks(){
+        let sum = 0;
+        for(let i = 0; i <this.listOfDrinks.length; i++){
+            sum += this.listOfDrinks[i].price
+        }
+        return sum
+    }
+    calculateFinalSum(){
+        return this.sumOfDrinks + this.sumOfPastas + this.sumOfPizzas
+
+    }
+}
 class Table{
     constructor(table){
         this.tableName = table;
@@ -198,6 +248,12 @@ order3.addDrink(voda);
 console.log(order3);
 Restaurant.listOfOrders.push(order3);
 console.log(Restaurant.listOfOrders);
+let bill = new Bill(order3);
+console.log(bill)
+let bill1 = new Bill(order1);
+console.log(bill1);
 
-
-
+let order4 = new Order(4);
+const vezuvio = new Pizza("Vezuvio");
+order4.addPizza(vezuvio);
+console.log(order4);
