@@ -1,14 +1,5 @@
-//list of active orders
-let listOfOrders = [];
-
-const  namesOfPizzas =['Capriciosa', 'Vezuvio','Siciliana', 'Calzona'];
-const  namesOfPastas = ['Carbonara', 'Milaneze', 'Italiana', 'Bolonjeze', 'Quatr0 Formagio'];
-const typesOfDrinks = ['Voda', 'negaziranni sok', 'gazirani sok'];
-const namesOfDrinks = ['Rosa', 'Jabuka', 'Coca Cola'];
-const namesOfAdds = ['Kecap', 'Sir', 'Origano', 'Pavlaka', 'Masline'];
-const volumeOfDrinks = [0.5, 0.25, 0.33];
 const tableList = document.querySelector(".table-list");
-const ordersList = document.getElementById("orders-list");
+//const ordersList = document.getElementById("orders-list");
 class Order{
     constructor(tableNumber){
         this.date = this.getDate();
@@ -17,11 +8,10 @@ class Order{
         this.listOfPizzas = [];
         this.listOfPastas = [];
         this.listOfDrinks = [];
-        this.addonsForPizza = [];
-        this.addonsForPasta = [];
     }
-    
+    //number of current order
      static currentOrder = 0;
+
     getDate(){
         let day = new Date().getDate();
         let month = new Date().getMonth() + 1;
@@ -45,13 +35,6 @@ class Order{
     addDrink(drink){
         this.listOfDrinks.push(drink)
     }
-    addAddonPizza(addonForPizza){
-        this.addonsForPizza.push(addonForPizza)
-    }
-    addAddonPasta(addonForPasta){
-        this.addonsForPasta.push(addonForPasta)
-    }
-    
 }
 class Table{
     constructor(table){
@@ -102,25 +85,35 @@ class Addon{
     }
 }
 class Restaurant{
+    //list of current orders
+    static  listOfOrders = [];
+    // arrays of names and values
+    static  namesOfPizzas =['Capriciosa', 'Vezuvio','Siciliana', 'Calzona'];
+    static  namesOfPastas = ['Carbonara', 'Milaneze', 'Italiana', 'Bolonjeze', 'Quatr0 Formagio'];
+    static  typesOfDrinks = ['Voda', 'negaziranni sok', 'gazirani sok'];
+    static  namesOfDrinks = ['Rosa', 'Jabuka', 'Coca Cola'];
+    static  namesOfAdds = ['Kecap', 'Sir', 'Origano', 'Pavlaka', 'Masline'];
+    static  volumeOfDrinks = [0.5, 0.25, 0.33];
+
     static start(numberOfTables,numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds){
         Restaurant.getTables(numberOfTables);
         Restaurant.getItems(numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds)
     }
     static getItems(numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds){
         for(let i = 0; i < numberOfPizzas; i++){
-            let pizza = new Pizza(namesOfPizzas[i]);
+            let pizza = new Pizza(Restaurant.namesOfPizzas[i]);
             arrayOfItems.push(pizza);
         }
         for (let i = 0; i < numberOfPastas; i++){
-            let pasta = new Pasta(namesOfPastas[i]);
+            let pasta = new Pasta(Restaurant.namesOfPastas[i]);
             arrayOfItems.push(pasta)
         }
         for(let i = 0; i < numberOfDrinks; i++){
-            let drink = new Drink(typesOfDrinks[i], namesOfDrinks[i], volumeOfDrinks[i]);
+            let drink = new Drink(Restaurant.typesOfDrinks[i], Restaurant.namesOfDrinks[i], Restaurant.volumeOfDrinks[i]);
             arrayOfItems.push(drink);
         }
         for(let i = 0; i < numberOfAdds; i++){
-            let adds = new Addon(namesOfAdds[i]);
+            let adds = new Addon(Restaurant.namesOfAdds[i]);
             arrayOfItems.push(adds)
         }
     }
@@ -178,7 +171,7 @@ order1.addDrink(cocaCola);
 order1.addDrink(cocaCola);
 console.log(order1);
 
-listOfOrders.push(order1);
+Restaurant.listOfOrders.push(order1);
 let order2 = new Order(2);
 let siciliana = new Pizza("Siciliana");
 order2.addPizza(siciliana);
@@ -187,7 +180,7 @@ order2.addPizza(carbonara);
 let negaziraniSokMali = new Drink("negazirani", "Negazirani", 0.25);
 order2.addDrink(negaziraniSokMali);
 console.log(order2);
-listOfOrders.push(order2);
+Restaurant.listOfOrders.push(order2);
 
 let order3 = new Order(3);
 const capriciosa = new Pizza("Capriciosa");
@@ -196,8 +189,6 @@ capriciosa2.addon =ketchup;
 order3.addPizza(capriciosa2);
 order3.addPizza(capriciosa2);
 order3.addPizza(capriciosa); 
-//order3.addAddonPizza(ketchup);
-//order3.addAddonPizza(ketchup);
 let negaziraniSok = new Drink("negazirani", "Negazirani", 0.5);
 order3.addDrink(negaziraniSok);
 let gaziraniSok = new Drink("gazirani", "Gazirani",0.33);
@@ -205,8 +196,8 @@ order3.addDrink(gaziraniSok);
 let voda = new Drink("voda", "Voda Casa", 0.2);
 order3.addDrink(voda);
 console.log(order3);
-listOfOrders.push(order3);
-console.log(listOfOrders);
+Restaurant.listOfOrders.push(order3);
+console.log(Restaurant.listOfOrders);
 
 
 
