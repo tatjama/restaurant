@@ -1,11 +1,6 @@
 //list of active orders
 let listOfOrders = [];
-//number of last created order
-let currentNumber = 0;
-//name of current item
-//let currentName = "";
-//create array of items;
-let arrayOfItems = [];
+
 const  namesOfPizzas =['Capriciosa', 'Vezuvio','Siciliana', 'Calzona'];
 const  namesOfPastas = ['Carbonara', 'Milaneze', 'Italiana', 'Bolonjeze', 'Quatr0 Formagio'];
 const typesOfDrinks = ['Voda', 'negaziranni sok', 'gazirani sok'];
@@ -17,7 +12,7 @@ const ordersList = document.getElementById("orders-list");
 class Order{
     constructor(tableNumber){
         this.date = this.getDate();
-        this.orderNumber = Order.getNumber();
+        this.orderNumber = Order.getNewNumber();
         this.tableNumber = tableNumber;
         this.listOfPizzas = [];
         this.listOfPastas = [];
@@ -25,6 +20,8 @@ class Order{
         this.addonsForPizza = [];
         this.addonsForPasta = [];
     }
+    
+     static currentOrder = 0;
     getDate(){
         let day = new Date().getDate();
         let month = new Date().getMonth() + 1;
@@ -35,9 +32,9 @@ class Order{
         let t = time + ":" + minutes;
         return [d, t];
     }
-    static getNumber(){
-        currentNumber = ++currentNumber;
-        return currentNumber;
+    static getNewNumber(){
+        this.currentOrder = ++this.currentOrder;
+        return this.currentOrder ;
     }
     addPizza(pizza){
         this.listOfPizzas.push(pizza)
@@ -86,8 +83,7 @@ class Meal{
     get addon(){
         return this.addonArr
     }
-    set addon(nameOfAddon){  
-        const currentAddon = new Addon(nameOfAddon)
+    set addon(currentAddon){  
          this.addonArr.push(currentAddon);
     }
 }
@@ -162,23 +158,28 @@ class UI{
         table.appendChild(div);
     }    
 }
+let arrayOfItems = [];
 document.addEventListener('DOMContentLoaded', 
 Restaurant.start(numberOfTables = 4,numberOfPizzas = 4, numberOfPastas = 5, numberOfDrinks = 3, numberOfAdds = 5));
 console.log(arrayOfItems)
 let order1 = new Order(1);
-let capriciosa = new Pizza("Capriciosa");
-capriciosa.addon = "ketchup";
-capriciosa.addon = "origano";
-order1.addPizza(capriciosa);
+const capriciosa1 = new Pizza("Capriciosa");
+const ketchup = new Addon("ketchup");
+const origano = new Addon("origano");
+capriciosa1.addon = ketchup;
+capriciosa1.addon = origano;
+order1.addPizza(capriciosa1);
 let italiana = new Pasta("Italiana");
 order1.addPasta(italiana);
-italiana.addon = "sir";
+const cheese = new Addon("cheese");
+italiana.addon = cheese;
 let cocaCola = new Drink("gazirano", "Coca Cola", 0.5);
 order1.addDrink(cocaCola);
 order1.addDrink(cocaCola);
 console.log(order1);
+
 listOfOrders.push(order1);
-/*let order2 = new Order(2);
+let order2 = new Order(2);
 let siciliana = new Pizza("Siciliana");
 order2.addPizza(siciliana);
 let carbonara = new Pizza("Carbonara");
@@ -187,12 +188,16 @@ let negaziraniSokMali = new Drink("negazirani", "Negazirani", 0.25);
 order2.addDrink(negaziraniSokMali);
 console.log(order2);
 listOfOrders.push(order2);
+
 let order3 = new Order(3);
-order3.addPizza(capriciosa);
-order3.addPizza(capriciosa);
-order3.addPizza(capriciosa);
-order3.addAddonPizza(ketchup);
-order3.addAddonPizza(ketchup);
+const capriciosa = new Pizza("Capriciosa");
+const capriciosa2 = new Pizza("Capriciosa");
+capriciosa2.addon =ketchup;
+order3.addPizza(capriciosa2);
+order3.addPizza(capriciosa2);
+order3.addPizza(capriciosa); 
+//order3.addAddonPizza(ketchup);
+//order3.addAddonPizza(ketchup);
 let negaziraniSok = new Drink("negazirani", "Negazirani", 0.5);
 order3.addDrink(negaziraniSok);
 let gaziraniSok = new Drink("gazirani", "Gazirani",0.33);
@@ -201,7 +206,7 @@ let voda = new Drink("voda", "Voda Casa", 0.2);
 order3.addDrink(voda);
 console.log(order3);
 listOfOrders.push(order3);
-console.log(listOfOrders);*/
+console.log(listOfOrders);
 
 
 
