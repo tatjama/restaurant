@@ -73,25 +73,27 @@ class Drink{
         return price;
     }
 }
-class Pizza{
+class Meal{
     constructor(name){
         this.name = name;
         this.price = this.getPrice();
-    }
-     getPrice(){
-        const price = Math.floor(Math.random()*301)+300;
-        return price
-    }    
-}
-class Pasta{
-    constructor(name){
-        this.name = name;
-        this.price = this.getPrice();
+        this.addonArr = [];
     }
     getPrice(){
-        const price = Math.floor(Math.random()*301) + 300;
+        const price =Math.floor(Math.random()*301) + 300;
         return price;
-    }    
+    }
+    get addon(){
+        return this.addonArr
+    }
+    set addon(nameOfAddon){  
+        const currentAddon = new Addon(nameOfAddon)
+         this.addonArr.push(currentAddon);
+    }
+}
+class Pizza extends Meal{   
+}
+class Pasta extends Meal{
 }
 class Addon{
     constructor(name){
@@ -165,21 +167,18 @@ Restaurant.start(numberOfTables = 4,numberOfPizzas = 4, numberOfPastas = 5, numb
 console.log(arrayOfItems)
 let order1 = new Order(1);
 let capriciosa = new Pizza("Capriciosa");
+capriciosa.addon = "ketchup";
+capriciosa.addon = "origano";
 order1.addPizza(capriciosa);
-let ketchup = new Addon("ketchup");
-order1.addAddonPizza(ketchup);
-let origano = new Addon("origano");
-order1.addAddonPizza(origano);
 let italiana = new Pasta("Italiana");
 order1.addPasta(italiana);
-let sir = new Addon("sir");
-order1.addAddonPasta(sir);
+italiana.addon = "sir";
 let cocaCola = new Drink("gazirano", "Coca Cola", 0.5);
 order1.addDrink(cocaCola);
 order1.addDrink(cocaCola);
 console.log(order1);
 listOfOrders.push(order1);
-let order2 = new Order(2);
+/*let order2 = new Order(2);
 let siciliana = new Pizza("Siciliana");
 order2.addPizza(siciliana);
 let carbonara = new Pizza("Carbonara");
@@ -202,7 +201,7 @@ let voda = new Drink("voda", "Voda Casa", 0.2);
 order3.addDrink(voda);
 console.log(order3);
 listOfOrders.push(order3);
-console.log(listOfOrders);
+console.log(listOfOrders);*/
 
 
 
