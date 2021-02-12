@@ -154,7 +154,7 @@ class Restaurant{
         let order;
         try {
             if(Restaurant.listOfOrders.some(order => order.tableNumber === tableNumber)) 
-            throw "Nije moguce izdati novu porudzbinu, jer predhodna nije placena!"
+            {throw "Nije moguce izdati novu porudzbinu, jer predhodna nije placena!"}
             order = new Order(tableNumber);
         } catch (error) {
             console.log(error)
@@ -170,20 +170,24 @@ class Restaurant{
     static payBill(numberOfBill){
        let payCurrentBill = Restaurant.listOfBills.find(bill => bill.billNumber == numberOfBill);
        let payCurrentOrder = Restaurant.listOfOrders.find(order => order.orderNumber == numberOfBill);
-       try{
+       //console.log(!payCurrentBill)
+       /*try{
+        //if(!payCurrentBill) throw `There is no active bill number ${numberOfBill}`
         payCurrentBill.paid = true;
         Restaurant.listOfPaidBills.push(payCurrentBill);
         Restaurant.listOfBills.splice(Restaurant.listOfBills.indexOf(payCurrentBill), 1)
         Restaurant.listOfOrders.splice(Restaurant.listOfOrders.indexOf(payCurrentOrder), 1)
-       }catch(e){
-           console.log(`There is no active bill number ${numberOfBill}`)
-       }
-       /*if(payCurrentBill){
+        
+      }catch(e){
+          // console.log(`There is no active bill number ${numberOfBill}`)
+          console.log(e.message);
+       }*/
+       if(payCurrentBill){
            payCurrentBill.paid = true;
            Restaurant.listOfPaidBills.push(payCurrentBill);
            Restaurant.listOfBills.splice(Restaurant.listOfBills.indexOf(payCurrentBill), 1)
            Restaurant.listOfOrders.splice(Restaurant.listOfOrders.indexOf(payCurrentOrder), 1)
-       }else{console.log(`There is no active bill number ${numberOfBill}`)}*/
+       }else{console.log(`There is no active bill number ${numberOfBill}`)}
     }
     static start(numberOfTables,numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds){
         Restaurant.getTables(numberOfTables);
@@ -299,8 +303,9 @@ console.log( Restaurant.listOfBills);
 console.log( Restaurant.listOfPaidBills);
 console.log( Restaurant.listOfOrders);
 let order4 = Restaurant.createNewOrder(1);
+
+const vezuvio = new Pizza("Vezuvio");
 Restaurant.payBill(1);
 order4 = Restaurant.createNewOrder(1)
-const vezuvio = new Pizza("Vezuvio");
 order4.addPizza(vezuvio);
 console.log(order4);
