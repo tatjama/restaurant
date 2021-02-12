@@ -47,6 +47,7 @@ class Bill {
         this.listOfDrinks = order.listOfDrinks;
         this.sumOfDrinks = this.calculateSumOfDrinks();
         this.finalSum = this.calculateFinalSum();
+        this.paid = false;
     }
     calculateSumOfPizzas(){
         let sum = 0;
@@ -136,7 +137,11 @@ class Addon{
 }
 class Restaurant{
     //list of current orders
-    static  listOfOrders = [];
+    static  listOfOrders = [];    
+    //list of bills
+    static listOfBills = [];
+    //list of paid bills
+    static listOfPaidBills = [];
     // arrays of names and values
     static  namesOfPizzas =['Capriciosa', 'Vezuvio','Siciliana', 'Calzona'];
     static  namesOfPastas = ['Carbonara', 'Milaneze', 'Italiana', 'Bolonjeze', 'Quatr0 Formagio'];
@@ -145,6 +150,41 @@ class Restaurant{
     static  namesOfAdds = ['Kecap', 'Sir', 'Origano', 'Pavlaka', 'Masline'];
     static  volumeOfDrinks = [0.5, 0.25, 0.33];
 
+    static createNewOrder(tableNumber){
+        let order;
+        try {
+            if(Restaurant.listOfOrders.some(order => order.tableNumber === tableNumber)) 
+            throw "Nije moguce izdati novu porudzbinu, jer predhodna nije placena!"
+            order = new Order(tableNumber);
+        } catch (error) {
+            console.log(error)
+        }
+        /*if(Restaurant.listOfOrders.some(order => order.tableNumber === tableNumber)){
+            console.log("Nije moguce izdati novu porudzbinu, jer predhodna nije placena!")
+        }else{
+             order = new Order(tableNumber);
+        }*/
+        
+        return order
+    }
+    static payBill(numberOfBill){
+       let payCurrentBill = Restaurant.listOfBills.find(bill => bill.billNumber == numberOfBill);
+       let payCurrentOrder = Restaurant.listOfOrders.find(order => order.orderNumber == numberOfBill);
+       try{
+        payCurrentBill.paid = true;
+        Restaurant.listOfPaidBills.push(payCurrentBill);
+        Restaurant.listOfBills.splice(Restaurant.listOfBills.indexOf(payCurrentBill), 1)
+        Restaurant.listOfOrders.splice(Restaurant.listOfOrders.indexOf(payCurrentOrder), 1)
+       }catch(e){
+           console.log(`There is no active bill number ${numberOfBill}`)
+       }
+       /*if(payCurrentBill){
+           payCurrentBill.paid = true;
+           Restaurant.listOfPaidBills.push(payCurrentBill);
+           Restaurant.listOfBills.splice(Restaurant.listOfBills.indexOf(payCurrentBill), 1)
+           Restaurant.listOfOrders.splice(Restaurant.listOfOrders.indexOf(payCurrentOrder), 1)
+       }else{console.log(`There is no active bill number ${numberOfBill}`)}*/
+    }
     static start(numberOfTables,numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds){
         Restaurant.getTables(numberOfTables);
         Restaurant.getItems(numberOfPizzas, numberOfPastas, numberOfDrinks, numberOfAdds)
@@ -205,7 +245,7 @@ let arrayOfItems = [];
 document.addEventListener('DOMContentLoaded', 
 Restaurant.start(numberOfTables = 4,numberOfPizzas = 4, numberOfPastas = 5, numberOfDrinks = 3, numberOfAdds = 5));
 console.log(arrayOfItems)
-let order1 = new Order(1);
+let order1 = Restaurant.createNewOrder(1);
 const capriciosa1 = new Pizza("Capriciosa");
 const ketchup = new Addon("ketchup");
 const origano = new Addon("origano");
@@ -220,9 +260,9 @@ let cocaCola = new Drink("gazirano", "Coca Cola", 0.5);
 order1.addDrink(cocaCola);
 order1.addDrink(cocaCola);
 console.log(order1);
-
 Restaurant.listOfOrders.push(order1);
-let order2 = new Order(2);
+
+let order2 = Restaurant.createNewOrder(2);
 let siciliana = new Pizza("Siciliana");
 order2.addPizza(siciliana);
 let carbonara = new Pizza("Carbonara");
@@ -232,7 +272,7 @@ order2.addDrink(negaziraniSokMali);
 console.log(order2);
 Restaurant.listOfOrders.push(order2);
 
-let order3 = new Order(3);
+let order3 = Restaurant.createNewOrder(3);
 const capriciosa = new Pizza("Capriciosa");
 const capriciosa2 = new Pizza("Capriciosa");
 capriciosa2.addon =ketchup;
@@ -247,13 +287,20 @@ let voda = new Drink("voda", "Voda Casa", 0.2);
 order3.addDrink(voda);
 console.log(order3);
 Restaurant.listOfOrders.push(order3);
-console.log(Restaurant.listOfOrders);
-let bill = new Bill(order3);
-console.log(bill)
-let bill1 = new Bill(order1);
-console.log(bill1);
 
-let order4 = new Order(4);
+console.log(Restaurant.listOfOrders);
+let bill1 = new Bill(order1);
+Restaurant.listOfBills.push(bill1);
+let bill3 = new Bill(order3);
+Restaurant.listOfBills.push(bill3);
+console.log( Restaurant.listOfBills);
+Restaurant.payBill(2);
+console.log( Restaurant.listOfBills);
+console.log( Restaurant.listOfPaidBills);
+console.log( Restaurant.listOfOrders);
+let order4 = Restaurant.createNewOrder(1);
+Restaurant.payBill(1);
+order4 = Restaurant.createNewOrder(1)
 const vezuvio = new Pizza("Vezuvio");
 order4.addPizza(vezuvio);
 console.log(order4);
